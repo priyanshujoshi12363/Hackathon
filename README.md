@@ -342,7 +342,7 @@ Backend:
 * Node.js
 * Express.js
 * fastapi
-Database:
+
 
 * MongoDB
 
