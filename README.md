@@ -335,7 +335,7 @@ AQI rising after 6 PM
 
 Frontend:
 
-* Next.js
+* React.js
 
 Backend:
 
