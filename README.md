@@ -6,280 +6,328 @@ AI-powered financial protection system for delivery partners
 
 ## Overview
 
-Gig Guard is a full-stack system designed to protect delivery partners from income loss during disruptions such as heavy rain, poor air quality, or local restrictions.
+Gig Guard is a full-stack, AI-driven system designed to protect delivery partners from income loss during disruptions such as heavy rainfall, poor air quality, or local curfews.
 
-The platform combines environmental data, machine learning models, and automated workflows to detect risk and provide financial support without requiring manual claims.
+Instead of relying on slow, manual claim processes, Gig Guard continuously monitors real-world conditions, calculates risk using machine learning, and automatically triggers payouts when a driver is unable to work.
 
-The system is built to simulate real-world integration with delivery platforms like Zomato or Swiggy through a partner API model.
+The system simulates real-world integration with platforms like Zomato or Swiggy using a partner API, demonstrating a scalable and backend-first approach to gig worker financial security.
 
 ---
 
-## Problem
+## The Problem
 
-Delivery partners depend on daily work for income. When external conditions disrupt operations, their earnings stop immediately.
-
-Key challenges:
+Delivery partners operate on a per-task earning model. When disruptions occur, their income stops immediately.
 
 * No income during disasters or curfews
-* No automated protection system
-* Manual claim processes are slow or unavailable
+* No structured financial safety net
+* Manual claim systems are slow and unreliable
 
 ---
 
-## Solution
+## The Solution
 
-Gig Guard introduces a backend-driven, automated protection system:
+Gig Guard provides a fully automated safety system:
 
-* User logs in using phone or delivery platform
-* Driver data is fetched from a simulated partner API
-* Environmental conditions are monitored continuously
-* Risk is calculated using machine learning
-* If conditions are critical, payout is triggered automatically
-* User is informed through WhatsApp and in-app assistant
+* Login via phone or delivery platform
+* Driver data fetched from a simulated partner API
+* Real-time monitoring of weather, AQI, and location
+* Risk calculated using ML models
+* Automatic claim generation and payout
+* Notifications via WhatsApp and VAANI AI assistant
+
+This removes paperwork, reduces delays, and ensures timely support.
 
 ---
 
 ## System Architecture
 
 ```text
-React Frontend
-       │
-       ▼
-Backend API (Node.js / Express)
-       │
-       ├── MongoDB (driver data)
-       ├── Mock Partner API
-       ├── ML Models (Risk, Fraud, Payout)
-       ├── External APIs (Weather, AQI, Maps)
-       └── WhatsApp Notification Service
+[ React Frontend ]
+        │
+        ▼
+[ Backend API (Node.js / Express) ]
+        │
+        ├── MongoDB (Driver & Claims Data)
+        ├── Mock Partner API
+        ├── ML Models (INDRA, KAVACH, DHAN)
+        ├── External APIs (Weather, AQI, Maps)
+        └── WhatsApp Notification Service
 ```
 
 ---
 
 ## Intelligence Stack
 
-Gig Guard runs multiple components in sequence:
-
 ```text
 INDRA → KAVACH → DHAN → VAANI
 ```
 
-* **INDRA (Risk Engine)**
-  Processes weather, AQI, and location data to generate a disruption risk score (0–100).
-  If the score crosses a threshold, the system prepares a claim.
+### INDRA — Risk Engine
 
-* **KAVACH (Fraud Engine)**
-  Validates claims using GPS location, movement patterns, duplicate detection, and environmental confirmation.
-
-* **DHAN (Payout Engine)**
-  Calculates payout based on risk level, work disruption, and driver earnings.
-
-* **VAANI (AI Assistant)**
-  Communicates results, explains decisions, and guides the user.
+* Uses weather, AQI, and location data
+* Generates risk score (0–100)
+* Triggers protection when threshold is crossed
 
 ---
 
-## Machine Learning Components
+### KAVACH — Fraud Engine
 
-### Risk Model
-
-Evaluates environmental and contextual inputs:
-
-* Rainfall, wind, visibility
-* AQI levels
-* Location and zone data
-
-Output: Risk score (0–100)
+* GPS validation
+* Movement tracking
+* Duplicate claim detection
+* Environmental verification
 
 ---
 
-### Payout Model
+### DHAN — Payout Engine
 
-Determines compensation using:
+* Calculates payout based on:
+
+  * Risk score
+  * Work disruption
+  * Earnings
+
+---
+
+### VAANI — AI Assistant
+
+* Explains system decisions
+* Provides work guidance
+* Answers user queries in natural language
+
+---
+
+## MVP (Minimum Viable Product)
+
+The current implementation demonstrates:
+
+* Platform-based login (Zomato, Swiggy, Google)
+* Driver data ingestion via mock API
+* Real-time risk scoring
+* Automatic claim generation
+* Fraud validation using GPS and behavior tracking
+* Dynamic payout calculation
+* React dashboard
+* WhatsApp notifications
+
+---
+
+## Product Flow (Website Architecture)
+
+## Project Structure (Next.js + Supabase)
+
+Gig Guard follows a scalable, production-ready architecture using Next.js 14, TypeScript, Tailwind, and Supabase.
+
+```text
+gigguard/
+│
+├── middleware.ts              # Auth guard — redirects unauthenticated users
+├── next.config.js             # Next.js config (PWA, image domains)
+├── tailwind.config.js         # Theme colors (navy, amber)
+├── tsconfig.json              # TypeScript config with path aliases
+├── package.json               # Dependencies (Next, Supabase, Leaflet, Chart.js)
+├── .env.example               # Environment variables
+├── .gitignore
+├── README.md
+│
+├── public/                    # Static assets (PWA icons, manifest)
+│   ├── manifest.json
+│   ├── icon-192.png
+│   └── icon-512.png
+│
+├── supabase/
+│   └── schema.sql             # Database schema + RLS policies
+│
+├── app/                       # Next.js App Router
+│   ├── layout.tsx             # Root layout + context providers
+│   ├── globals.css            # Global styles
+│   ├── page.tsx               # Redirect to dashboard
+│   │
+│   ├── (auth)/login/          # Authentication pages
+│   │   └── page.tsx
+│   │
+│   ├── (app)/                 # Main app layout
+│   │   ├── layout.tsx
+│   │   │
+│   │   ├── dashboard/         # Main dashboard
+│   │   ├── claims/            # Claims + pipeline view
+│   │   ├── map/               # Live risk map (Leaflet)
+│   │   ├── profile/           # Settings & user profile
+│   │   └── monitor/           # System architecture monitor
+│   │
+│   └── api/                   # Backend routes (Next API)
+│       ├── weather/
+│       ├── claims/
+│       ├── plans/
+│       ├── earnings/
+│       └── whatsapp/
+│
+├── components/                # UI components
+│   ├── layout/                # Navbar, Sidebar, BottomNav
+│   ├── dashboard/             # Dashboard widgets
+│   ├── claims/                # Claim UI components
+│   ├── map/                   # Map + zones
+│   ├── profile/               # Profile components
+│   ├── shared/                # Reusable UI (toast, badge, skeleton)
+│   └── modals/                # Modals (plans, simulation)
+│
+├── hooks/                     # Custom React hooks
+│   ├── useAuth.ts
+│   ├── useWeather.ts
+│   ├── useClaims.ts
+│   ├── usePlan.ts
+│   ├── useToast.ts
+│   └── useOffline.ts
+│
+├── context/                   # Global state
+│   ├── DeviceContext.tsx
+│   └── LanguageContext.tsx
+│
+├── lib/                       # Core utilities
+│   ├── supabase.ts
+│   ├── translations.ts
+│   ├── risk.ts
+│   ├── cache.ts
+│   └── zones.ts
+│
+└── types/                     # TypeScript types
+    └── index.ts
+```
+
+---
+
+## Architecture Highlights
+
+* **App Router (Next.js 14)** for scalable routing
+* **Supabase integration** for auth, database, and realtime updates
+* **API routes inside `/app/api`** for backend logic
+* **Modular components system** for UI scalability
+* **Custom hooks** for clean business logic separation
+* **Context API** for global state (device + language)
+* **Offline support + caching layer**
+* **PWA-ready setup** with manifest and install support
+
+---
+
+## Why This Structure Matters
+
+* Clean separation of frontend, backend, and logic
+* Easy to scale for production-level systems
+* Supports real-time updates and offline mode
+* Optimized for performance and maintainability
+
+---
+
+
+### 1. Home Page
+
+* Platform login (Zomato / Swiggy / Google)
+* Quick onboarding
+
+---
+
+### 2. Dashboard
 
 * Risk score
-* Estimated hours lost
-* Driver’s earning history
+* Environmental insights
+* Earnings vs protected amount
+* Active plan
 
 ---
 
-### Fraud Detection Model
+### 3. Intelligence Stack & Fraud Map
 
-Identifies anomalies such as:
+* Visual model pipeline
+* Real-time validation using:
 
-* GPS mismatch
-* Unusual movement speed
-* Duplicate claims
-* Inconsistent activity
+  * Location
+  * Movement
+  * Environment
 
 ---
 
-### Premium Calculation
+### 4. VAANI Assistant
 
-```text
-premium = 49 + (risk_score / 100) * 29
+Users can ask:
+
+* “Is it safe to work today?”
+* “Why did I receive this payout?”
+
+---
+
+### 5. Claims
+
+* Claim history
+* Status tracking
+* Disruption type
+
+---
+
+### 6. Vault
+
+* Total payouts
+* Earnings protection
+* Bank/UPI integration
+
+---
+
+### 7. Protection Plans
+
+| Plan     | Cost | Coverage            | Max Payout |
+| -------- | ---- | ------------------- | ---------- |
+| Basic    | ₹34  | Rain only           | ₹600       |
+| Standard | ₹58  | Rain + AQI + Curfew | ₹1,200     |
+| Premium  | ₹89  | All disruptions     | ₹2,000     |
+
+---
+
+## WhatsApp Bot Integration
+
+Gig Guard includes a WhatsApp-based notification system.
+
+### Features
+
+* Risk alerts
+* Payout confirmations
+* Real-time updates
+* Safety recommendations
+
+### Example
+
+```
+Risk Alert:
+Heavy rainfall detected.
+Risk Score: 72 (High)
+
+Payout Update:
+₹320 credited to your UPI
+
+Reminder:
+AQI rising after 6 PM
 ```
 
 ---
 
-## Protection Plans
+## Unique Features
 
-Gig Guard follows a subscription model where users can choose their level of protection.
-
-### Basic Plan — ₹34/week
-
-* Covers rain-related disruptions
-* Maximum payout: ₹600/week
-* Limited zone coverage
-
----
-
-### Standard Plan — ₹58/week
-
-* Covers rain, AQI, and curfew disruptions
-* Maximum payout: ₹1,200/week
-* Wider zone coverage
-
----
-
-### Premium Plan — ₹89/week
-
-* Covers all disruption types
-* Maximum payout: ₹2,000/week
-* Priority payout processing
-
----
-
-### Plan Integration
-
-* Plan is selected during or after registration
-* Stored in user profile
-* Influences payout eligibility and limits
-* Higher plans provide broader coverage and faster processing
-
----
-
-## Frontend Experience
-
-The frontend is built using React and focuses on clarity and minimal interaction.
-
-### Authentication
-
-Users can log in using:
-
-* Zomato
-* Swiggy
-* Google (for other platforms)
-
-Accounts are created automatically after login.
-
----
-
-### Dashboard
-
-Displays:
-
-* Current risk score
-* Environmental data
-* Model outputs
-* System status
-
-Updates run periodically to reflect real-time conditions.
-
----
-
-### Intelligence Stack View
-
-Shows how the system processes data through:
-INDRA → KAVACH → DHAN → VAANI
-
-Helps users understand how decisions are made.
-
----
-
-### Fraud Detection Interface
-
-Includes a map-based validation system:
-
-* Verifies user location within zone
-* Tracks movement
-* Confirms weather conditions
-* Prevents duplicate claims
-
----
-
-### VAANI Assistant
-
-VAANI provides conversational interaction with the system.
-
-Users can:
-
-* Ask if it is safe to work
-* Understand risk levels
-* Get payout explanations
-* Receive recommendations
-
-Example:
-
-User:
-"Is tomorrow safe to work?"
-
-VAANI:
-"Risk is moderate. Morning hours are safe. Rain expected later."
-
----
-
-### Claims and Vault
-
-* View claim history
-* Track payouts
-* Monitor approval status
-
----
-
-### Plan Selection UI
-
-Users can:
-
-* Compare plans
-* Switch plans
-* View active subscription
-
----
-
-## API Example
-
-### Register Driver
-
-```text
-POST /api/register
-```
-
-Request:
-
-```json
-{
-  "phone": "9876543211"
-}
-```
-
-Behavior:
-
-* Searches driver in partner dataset
-* Saves to database
-* Returns driver profile
+* Fully automated claims and payouts
+* Multi-stage AI pipeline
+* Fraud detection map
+* VAANI AI assistant
+* Real-time environmental awareness
+* Subscription-based model
+* WhatsApp communication
 
 ---
 
 ## Advantages
 
-* Fully automated system with no manual claims
-* Backend-driven design reduces UI dependency
-* Data-driven decision making using ML models
-* Real-time awareness using external APIs
-* Fraud detection ensures system reliability
-* WhatsApp integration improves accessibility
-* Scalable architecture for large user base
+* No manual claim process
+* Fast payouts
+* Data-driven decisions
+* Fraud prevention
+* Scalable system
+* Easy for non-technical users
 
 ---
 
@@ -287,7 +335,7 @@ Behavior:
 
 Frontend:
 
-* React
+* Next.js
 
 Backend:
 
@@ -296,9 +344,9 @@ Backend:
 
 Database:
 
-* MongoDB (Mongoose)
+* MongoDB
 
-Machine Learning:
+ML:
 
 * LightGBM
 * Random Forest
@@ -306,20 +354,17 @@ Machine Learning:
 
 APIs:
 
-* Weather API
-* AQI API
-* Maps API
-* WhatsApp API
-
----
-
-## Disclaimer
-
-This project uses a simulated partner API for demonstration purposes.
-No real data from any delivery platform is accessed.
+* Weather
+* AQI
+* Maps
+* WhatsApp
 
 ---
 
 ## Vision
-
-Gig Guard aims to provide a reliable and automated financial safety system for gig workers, reducing uncertainty and improving stability during unpredictable conditions.
+Gig Guard aims to become an infrastructure layer for financial safety in the gig economy.
+---
+## Disclaimer
+This project uses simulated APIs for demonstration purposes.
+No real platform data is used.
+---
