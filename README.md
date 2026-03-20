@@ -1,209 +1,325 @@
-# Delivery Partner Protection API
+# Gig Guard
 
-A backend system that simulates integration with delivery platforms (like Zomato or Swiggy) to register delivery partners and provide emergency financial protection during disasters.
-This project demonstrates how a partner platform could share delivery driver data with a third-party protection service.
-
-The system verifies a driver's phone number, retrieves their profile from a simulated partner dataset, and stores it in a MongoDB database for further processing such as insurance coverage or financial assistance.
+AI-powered financial protection system for delivery partners
 
 ---
 
-## Project Concept
+## Overview
 
-Delivery partners often lose income during natural disasters, lockdowns, or emergencies.
-This system proposes a **financial protection platform** where delivery partners can:
+Gig Guard is a full-stack system designed to protect delivery partners from income loss during disruptions such as heavy rain, poor air quality, or local restrictions.
 
-* Register using their phone number
-* Verify their driver profile
-* Automatically import their delivery partner data
-* Store their work history and earnings
-* Enable future support such as emergency payouts or insurance
+The platform combines environmental data, machine learning models, and automated workflows to detect risk and provide financial support without requiring manual claims.
 
-For demonstration purposes, the delivery partner data is retrieved from a **mock partner dataset**.
+The system is built to simulate real-world integration with delivery platforms like Zomato or Swiggy through a partner API model.
 
 ---
 
-## Features
+## Problem
 
-* Express.js REST API
-* MongoDB integration using Mongoose
-* Driver registration using phone number
-* Automatic retrieval of partner data from a simulated platform
-* Nested schema support (work history, earnings, payout details)
-* Production-style backend structure
-* Environment configuration using dotenv
+Delivery partners depend on daily work for income. When external conditions disrupt operations, their earnings stop immediately.
 
----
+Key challenges:
 
-## Tech Stack
-
-Backend Framework
-
-* Node.js
-* Express.js
-
-Database
-
-* MongoDB
-* Mongoose ODM
-
-Utilities
-
-* dotenv
-* cors
+* No income during disasters or curfews
+* No automated protection system
+* Manual claim processes are slow or unavailable
 
 ---
 
-## Project Structure
+## Solution
 
-```
-backend
-│
-├── config
-│   └── db.js
-│
-├── controllers
-│   └── registerController.js
-│
-├── data
-│   └── DriverData.js
-│
-├── models
-│   └── Driver.js
-│
-├── routes
-│   └── driverRoutes.js
-│
-├── server.js
-└── .env
+Gig Guard introduces a backend-driven, automated protection system:
+
+* User logs in using phone or delivery platform
+* Driver data is fetched from a simulated partner API
+* Environmental conditions are monitored continuously
+* Risk is calculated using machine learning
+* If conditions are critical, payout is triggered automatically
+* User is informed through WhatsApp and in-app assistant
+
+---
+
+## System Architecture
+
+```text
+React Frontend
+       │
+       ▼
+Backend API (Node.js / Express)
+       │
+       ├── MongoDB (driver data)
+       ├── Mock Partner API
+       ├── ML Models (Risk, Fraud, Payout)
+       ├── External APIs (Weather, AQI, Maps)
+       └── WhatsApp Notification Service
 ```
 
 ---
 
-## Installation
+## Intelligence Stack
 
-### 1. Clone the repository
+Gig Guard runs multiple components in sequence:
 
-```
-git clone https://github.com/your-username/delivery-protection-api.git
-cd delivery-protection-api
-```
-
-### 2. Install dependencies
-
-```
-npm install
+```text
+INDRA → KAVACH → DHAN → VAANI
 ```
 
-### 3. Create environment file
+* **INDRA (Risk Engine)**
+  Processes weather, AQI, and location data to generate a disruption risk score (0–100).
+  If the score crosses a threshold, the system prepares a claim.
 
-Create a `.env` file in the root directory.
+* **KAVACH (Fraud Engine)**
+  Validates claims using GPS location, movement patterns, duplicate detection, and environmental confirmation.
 
-```
-PORT=5000
-MONGO_URI=mongodb://127.0.0.1:27017/delivery_protection
-```
+* **DHAN (Payout Engine)**
+  Calculates payout based on risk level, work disruption, and driver earnings.
 
-### 4. Start the server
+* **VAANI (AI Assistant)**
+  Communicates results, explains decisions, and guides the user.
 
-```
-node server.js
-```
+---
 
-or
+## Machine Learning Components
 
-```
-npm run dev
+### Risk Model
+
+Evaluates environmental and contextual inputs:
+
+* Rainfall, wind, visibility
+* AQI levels
+* Location and zone data
+
+Output: Risk score (0–100)
+
+---
+
+### Payout Model
+
+Determines compensation using:
+
+* Risk score
+* Estimated hours lost
+* Driver’s earning history
+
+---
+
+### Fraud Detection Model
+
+Identifies anomalies such as:
+
+* GPS mismatch
+* Unusual movement speed
+* Duplicate claims
+* Inconsistent activity
+
+---
+
+### Premium Calculation
+
+```text
+premium = 49 + (risk_score / 100) * 29
 ```
 
 ---
 
-## API Endpoint
+## Protection Plans
+
+Gig Guard follows a subscription model where users can choose their level of protection.
+
+### Basic Plan — ₹34/week
+
+* Covers rain-related disruptions
+* Maximum payout: ₹600/week
+* Limited zone coverage
+
+---
+
+### Standard Plan — ₹58/week
+
+* Covers rain, AQI, and curfew disruptions
+* Maximum payout: ₹1,200/week
+* Wider zone coverage
+
+---
+
+### Premium Plan — ₹89/week
+
+* Covers all disruption types
+* Maximum payout: ₹2,000/week
+* Priority payout processing
+
+---
+
+### Plan Integration
+
+* Plan is selected during or after registration
+* Stored in user profile
+* Influences payout eligibility and limits
+* Higher plans provide broader coverage and faster processing
+
+---
+
+## Frontend Experience
+
+The frontend is built using React and focuses on clarity and minimal interaction.
+
+### Authentication
+
+Users can log in using:
+
+* Zomato
+* Swiggy
+* Google (for other platforms)
+
+Accounts are created automatically after login.
+
+---
+
+### Dashboard
+
+Displays:
+
+* Current risk score
+* Environmental data
+* Model outputs
+* System status
+
+Updates run periodically to reflect real-time conditions.
+
+---
+
+### Intelligence Stack View
+
+Shows how the system processes data through:
+INDRA → KAVACH → DHAN → VAANI
+
+Helps users understand how decisions are made.
+
+---
+
+### Fraud Detection Interface
+
+Includes a map-based validation system:
+
+* Verifies user location within zone
+* Tracks movement
+* Confirms weather conditions
+* Prevents duplicate claims
+
+---
+
+### VAANI Assistant
+
+VAANI provides conversational interaction with the system.
+
+Users can:
+
+* Ask if it is safe to work
+* Understand risk levels
+* Get payout explanations
+* Receive recommendations
+
+Example:
+
+User:
+"Is tomorrow safe to work?"
+
+VAANI:
+"Risk is moderate. Morning hours are safe. Rain expected later."
+
+---
+
+### Claims and Vault
+
+* View claim history
+* Track payouts
+* Monitor approval status
+
+---
+
+### Plan Selection UI
+
+Users can:
+
+* Compare plans
+* Switch plans
+* View active subscription
+
+---
+
+## API Example
 
 ### Register Driver
 
-Registers a delivery partner by searching their phone number in the simulated partner dataset and saving their profile to MongoDB.
-
-**Endpoint**
-
-```
+```text
 POST /api/register
 ```
 
-**Request Body**
+Request:
 
-```
+```json
 {
   "phone": "9876543211"
 }
 ```
 
-**Success Response**
+Behavior:
 
-```
-{
-  "success": true,
-  "message": "Driver registered successfully",
-  "data": {
-    "driver_id": "DLP45632",
-    "name": "Priya Singh",
-    "phone": "9876543211",
-    "city": "Delhi"
-  }
-}
-```
+* Searches driver in partner dataset
+* Saves to database
+* Returns driver profile
 
 ---
 
-## Driver Data Structure
+## Advantages
 
-Each driver contains:
-
-* Driver ID
-* Name
-* Phone number
-* City
-* Vehicle type
-* Rating
-* Work history
-* Earnings statistics
-* Bank payout details
-
-Example:
-
-```
-{
-  "driver_id": "DLP45632",
-  "name": "Priya Singh",
-  "phone": "9876543211",
-  "city": "Delhi",
-  "vehicle_type": "Scooty",
-  "rating": 4.9
-}
-```
+* Fully automated system with no manual claims
+* Backend-driven design reduces UI dependency
+* Data-driven decision making using ML models
+* Real-time awareness using external APIs
+* Fraud detection ensures system reliability
+* WhatsApp integration improves accessibility
+* Scalable architecture for large user base
 
 ---
 
-## Database Schema
+## Tech Stack
 
-The MongoDB schema stores nested structures including:
+Frontend:
 
-* Work history
-* Earnings information
-* Payout details
-* Driver profile information
+* React
 
-All driver profiles are stored in the **drivers collection**.
+Backend:
+
+* Node.js
+* Express.js
+
+Database:
+
+* MongoDB (Mongoose)
+
+Machine Learning:
+
+* LightGBM
+* Random Forest
+* Isolation Forest
+
+APIs:
+
+* Weather API
+* AQI API
+* Maps API
+* WhatsApp API
 
 ---
 
-## Future Improvements
+## Disclaimer
 
-* WhatsApp bot integration for notifications
-* Disaster detection system
-* Driver insurance coverage system
-* Automated payout system
-* Admin dashboard for monitoring drivers
+This project uses a simulated partner API for demonstration purposes.
+No real data from any delivery platform is accessed.
 
 ---
 
+## Vision
 
+Gig Guard aims to provide a reliable and automated financial safety system for gig workers, reducing uncertainty and improving stability during unpredictable conditions.
