@@ -345,7 +345,7 @@ Backend:
 
 
 * MongoDB
-
+* supabase
 ML:
 
 * LightGBM
