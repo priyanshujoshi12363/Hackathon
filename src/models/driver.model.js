@@ -96,6 +96,12 @@ const driverSchema = new mongoose.Schema(
     earnings: earningsSchema,
 
     payout_details: payoutDetailsSchema
+    ,
+    plan: {
+  type: String,
+  enum: ["basic", "standard", "premium"],
+  default: "basic"
+}
   },
   {
     timestamps: true
